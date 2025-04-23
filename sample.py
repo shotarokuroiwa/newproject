@@ -1,23 +1,44 @@
+import tkinter as tk
 import random
 
-print("🎮 数当てゲームを始めます！")
+# ランダムな秘密の数字を生成
 secret = random.randint(1, 100)
-attempts = 0
 
-while True:
-    guess = input("1〜100の数字を入力してください: ")
-
+def check_guess():
+    global secret
+    guess = entry.get()
     if not guess.isdigit():
-        print("⚠️ 数字を入力してね！")
-        continue
+        result_label.config(text="⚠️ 数字を入力してね！")
+        return
 
     guess = int(guess)
-    attempts += 1
-
     if guess < secret:
-        print("🔼 もっと大きい数字だよ！")
+        result_label.config(text="🔼 もっと大きいよ！")
     elif guess > secret:
-        print("🔽 もっと小さい数字だよ！")
+        result_label.config(text="🔽 もっと小さいよ！")
     else:
-        print(f"🎉 正解！{attempts} 回で当たったよ！")
-        break
+        result_label.config(text="🎉 正解！もう一回遊ぶ？")
+        secret = random.randint(1, 100)  # 新しい数字を設定
+
+# ウィンドウ作成
+root = tk.Tk()
+root.title("数当てゲーム")
+root.geometry("300x200")
+
+# ラベルと入力欄
+label = tk.Label(root, text="1〜100の数字を入力してね")
+label.pack(pady=10)
+
+entry = tk.Entry(root)
+entry.pack()
+
+# 結果表示
+result_label = tk.Label(root, text="")
+result_label.pack(pady=10)
+
+# ボタン
+button = tk.Button(root, text="チェック！", command=check_guess)
+button.pack()
+
+# ウィンドウ開始
+root.mainloop()
